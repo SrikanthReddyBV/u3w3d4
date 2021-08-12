@@ -1,0 +1,32 @@
+
+Table creation and insertion commands
+create database blog;
+use blog;
+create table authors (id integer auto_increment primary key, first_name varchar(15) not null, last_name varchar(15) not null);
+create table posts (id integer auto_increment primary key, title varchar(50) not null, content varchar(250) not null,time timestamp,author_id integer not null, foreign key(author_id) references authors(id) ON DELETE CASCADE );
+CREATE table comments (id INTEGER auto_increment PRIMARY KEY , comment VARCHAR(250) not null, post_id INTEGER not null, FOREIGN KEY (post_id) REFERENCES posts(id) on DELETE CASCADE );
+create table tags (id INTEGER auto_increment PRIMARY KEY, tag varchar(15) not null);
+ALTER TABLE posts ADD COLUMN (tag_id INTEGER DEFAULT 0, FOREIGN key(tag_id) REFERENCES tags(id) on DELETE set DEFAULT) ;
+
+Insertion queries :
+INSERT INTO authors(first_name,last_name) VALUES("srikanth","reddy");
+INSERT INTO tags(tag) VALUES("by me");
+INSERT INTO posts (title,CONTENT,author_id,tag_id) VALUES("2nd post","hello",1,1);
+
+Update and delete queries:
+SELECT posts.* FROM posts JOIN authors on posts.author_id = authors.id;
+DELETE FROM authors WHERE authors.first_name = "srikanth";
+
+Find all posts written by author:
+SELECT posts.* from posts JOIN authors WHERE authors.first_name = "srikanth";
+
+Find all comments written by author:
+SELECT comments.* from comments JOIN posts WHERE posts.author_id = 6;
+Find all comments for a post :
+SELECT comments.* from comments JOIN posts WHERE posts.id = comments.post_id;
+Find all tags for a post:
+SELECT tags.* from tags join posts where tags.id = posts.tag_id;
+Find all posts which have a tag:
+SELECT posts.* from posts join tags WHERE tags.id= posts.tag_id;
+Find all the tags added by author:
+ SELECT tags.* from tags join posts WHERE posts.tag_id= 1;
